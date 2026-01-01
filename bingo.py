@@ -29,30 +29,34 @@ def find_bingo(b):
         return True
     return False
 
-board = create_board()
-picked_numbers = set()
-print_board(board)
-
-while True:
-    try:
-        input("Press Enter to pick the next number...")
-    except KeyboardInterrupt:
-        print("\nGame interrupted.")
-        break
-
-    # Simulate picking a random number
-    picked_number = random.randint(1, 75)
-    while picked_number in picked_numbers:
-        picked_number = random.randint(1, 75)
-    picked_numbers.add(picked_number)
-    print(f"Picked number: {picked_number}")
-
-    for i in range(5):
-        for j in range(5):
-            if board[i][j] == picked_number:
-                board[i][j] = PICKED
-
+def game():
+    board = create_board()
+    picked_numbers = set()
     print_board(board)
-    if find_bingo(board):
-        print("★★★ Bingo! ★★★")
-        break
+
+    while True:
+        try:
+            input("Press Enter to pick the next number...")
+        except KeyboardInterrupt:
+            print("\nGame interrupted.")
+            break
+
+        # Simulate picking a random number
+        picked_number = random.randint(1, 75)
+        while picked_number in picked_numbers:
+            picked_number = random.randint(1, 75)
+        picked_numbers.add(picked_number)
+        print(f"Picked number: {picked_number}")
+
+        for i in range(5):
+            for j in range(5):
+                if board[i][j] == picked_number:
+                    board[i][j] = PICKED
+
+        print_board(board)
+        if find_bingo(board):
+            print("★★★ Bingo! ★★★")
+            break
+
+if __name__ == "__main__":
+    game()
