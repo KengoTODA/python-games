@@ -1,7 +1,7 @@
 import pgzrun
 import random
 
-WIDTH  = 360
+WIDTH = 360
 HEIGHT = 280
 
 class Game():
@@ -20,14 +20,14 @@ class Game():
         self.ball.update()
         self.left_pad.update()
 
-        if (self.ball.x <= 10):
-            if (self.left_pad.y-30 <= self.ball.y <= self.left_pad.y+30):
+        if self.ball.x <= 10:
+            if self.left_pad.y - 30 <= self.ball.y <= self.left_pad.y + 30:
                 self.ball.speed_x = -self.ball.speed_x
-        if (self.ball.y <= 0):
+        if self.ball.y <= 0:
             self.ball.speed_y = -self.ball.speed_y
-        if (self.ball.x > WIDTH-10):
+        if self.ball.x > WIDTH - 10:
             self.ball.speed_x = -self.ball.speed_x
-        if (self.ball.y > HEIGHT):
+        if self.ball.y > HEIGHT:
             self.ball.speed_y = -self.ball.speed_y
 
         if self.ball.x < 0:
@@ -42,10 +42,11 @@ class Paddle():
 
     def update(self):
         self.y += self.speed_y
-        if (self.y < 30):
+        # Keep the paddle on the screen.
+        if self.y < 30:
             self.y = 30
-        if (self.y > HEIGHT-30):
-            self.y = HEIGHT-30
+        if self.y > HEIGHT - 30:
+            self.y = HEIGHT - 30
 
     def draw(self):
         screen.draw.rect(Rect(self.x-1, self.y-30, 3, 60), (0, 0, 0))
@@ -53,7 +54,7 @@ class Paddle():
 class Ball():
     def __init__(self):
         self.x = random.randint(100, WIDTH-10)
-        self.y = random.randint(HEIGHT/5, HEIGHT*4/5)
+        self.y = random.randint(HEIGHT // 5, (HEIGHT * 4) // 5)
 
         self.speed_x = random.choice([-2, 2])
         self.speed_y = random.choice([-2, -1, 1, 2])

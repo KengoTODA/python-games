@@ -1,23 +1,37 @@
 import pytest
-from bingo import create_board, PICKED
+from bingo import (
+    BOARD_MAX,
+    BOARD_MIN,
+    BOARD_SIZE,
+    COLUMN_SIZE,
+    PICKED,
+    create_board,
+)
 
 def test_board_shape_and_center_picked():
     board = create_board()
     assert isinstance(board, list)
-    assert len(board) == 5
+    assert len(board) == BOARD_SIZE
     for col in board:
         assert isinstance(col, list)
-        assert len(col) == 5
+        assert len(col) == BOARD_SIZE
     # center must be the PICKED marker
     assert board[2][2] == PICKED
     # only the center should be PICKED
-    picked_count = sum(1 for i in range(5) for j in range(5) if board[i][j] == PICKED)
+    picked_count = sum(
+        1
+        for i in range(BOARD_SIZE)
+        for j in range(BOARD_SIZE)
+        if board[i][j] == PICKED
+    )
     assert picked_count == 1
 
 def test_column_ranges_and_uniqueness():
     board = create_board()
     for i, col in enumerate(board):
-        expected_range = set(range(i * 15 + 1, i * 15 + 16))
+        start = (i * COLUMN_SIZE) + 1
+        end = (i * COLUMN_SIZE) + COLUMN_SIZE + 1
+        expected_range = set(range(start, end))
         values = [v for v in col if v != PICKED]
         # all non-picked values are ints within the expected column range
         assert all(isinstance(v, int) for v in values)
@@ -33,4 +47,4 @@ def test_column_ranges_and_uniqueness():
 def test_all_numbers_in_valid_global_range():
     board = create_board()
     numbers = [v for col in board for v in col if v != PICKED]
-    assert all(1 <= v <= 75 for v in numbers)
+    assert all(BOARD_MIN <= v <= BOARD_MAX for v in numbers)

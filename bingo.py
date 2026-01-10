@@ -1,18 +1,25 @@
 import random
 
+BOARD_SIZE = 5
+COLUMN_SIZE = 15
+BOARD_MIN = 1
+BOARD_MAX = 75
 PICKED = '★'
 
 def print_board(b):
-    for row in range(5):
-        print(" | ".join(f"{b[col][row]:2}" for col in range(5)))
+    # The board is stored by columns, so we print by rows.
+    for row in range(BOARD_SIZE):
+        print(" | ".join(f"{b[col][row]:2}" for col in range(BOARD_SIZE)))
         print("-" * 23)
 
 def create_board():
     board = []
-    for i in range(5):
-        candidates = range((i*15)+1, (i*15)+16)
-        row = random.sample(candidates, 5)
-        board.append(row)
+    for col_index in range(BOARD_SIZE):
+        start = (col_index * COLUMN_SIZE) + 1
+        end = (col_index * COLUMN_SIZE) + COLUMN_SIZE + 1
+        candidates = range(start, end)
+        column = random.sample(candidates, BOARD_SIZE)
+        board.append(column)
     board[2][2] = PICKED
     return board
 
@@ -20,14 +27,21 @@ def find_bingo(b):
     for row in b:
         if all(num == PICKED for num in row):
             return True
-    for col in range(5):
-        if all(b[row][col] == PICKED for row in range(5)):
+    for col in range(BOARD_SIZE):
+        if all(b[row][col] == PICKED for row in range(BOARD_SIZE)):
             return True
-    if all(b[i][i] == PICKED for i in range(5)):
+    if all(b[i][i] == PICKED for i in range(BOARD_SIZE)):
         return True
-    if all(b[i][4-i] == PICKED for i in range(5)):
+    last = BOARD_SIZE - 1
+    if all(b[i][last - i] == PICKED for i in range(BOARD_SIZE)):
         return True
     return False
+
+def mark_picked_number(b, picked_number):
+    for col in range(BOARD_SIZE):
+        for row in range(BOARD_SIZE):
+            if b[col][row] == picked_number:
+                b[col][row] = PICKED
 
 def game():
     board = create_board()
@@ -42,16 +56,13 @@ def game():
             break
 
         # Simulate picking a random number
-        picked_number = random.randint(1, 75)
+        picked_number = random.randint(BOARD_MIN, BOARD_MAX)
         while picked_number in picked_numbers:
-            picked_number = random.randint(1, 75)
+            picked_number = random.randint(BOARD_MIN, BOARD_MAX)
         picked_numbers.add(picked_number)
         print(f"Picked number: {picked_number}")
 
-        for i in range(5):
-            for j in range(5):
-                if board[i][j] == picked_number:
-                    board[i][j] = PICKED
+        mark_picked_number(board, picked_number)
 
         print_board(board)
         if find_bingo(board):
