@@ -9,9 +9,9 @@ There is no `src/` folder, so new game files should also live at the top level.
 
 ## Build, Test, and Development Commands
 - `python bingo.py` starts the bingo game.
-- `pgzrun pingpong.py` starts the ping-pong game (uses Pygame Zero).
+- `python pingpong.py` starts the ping-pong game (uses turtle).
 - `python -m pytest` runs all tests.
-- `python -m pip install pytest pgzero` installs tools if your computer does not have them.
+- `python -m pip install pytest` installs tools if your computer does not have them.
 
 ## Coding Style & Naming Conventions
 Keep code easy to read for kids:
@@ -28,4 +28,4 @@ Tests use `pytest`. Test files should be named like `test_*.py`. Test functions 
 There is no strict commit style here. Use short, clear messages like “Add test for bingo board”. In a pull request, explain what changed, say if you ran tests, and add a screenshot if you change how the game looks.
 
 ## Configuration & Dependencies
-`pingpong.py` needs Pygame Zero (`pgzrun`). If you add a new tool or library, write the install command and how to run it in this file.
+`pingpong.py` uses Python's built-in `turtle` module (no extra install needed). If you add a new tool or library, write the install command and how to run it in this file.
